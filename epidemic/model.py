@@ -1,7 +1,7 @@
 from typing import List
 
-import torch
-from torch import Tensor
+import numpy as np
+from np import ndarray as Tensor
 
 
 class ModelParameters:
@@ -43,10 +43,10 @@ class Model:
         
         self.params = params
 
-        self.S = torch.zeros(params.time_horizon + 1, params.grid.shape[0], params.no_age_groups, 1)
-        self.I = torch.zeros(params.time_horizon + 1, params.grid.shape[0], params.no_age_groups, 1)
-        self.E = torch.zeros(params.time_horizon + 1, params.grid.shape[0], params.no_age_groups, 1)
-        self.R = torch.zeros(params.time_horizon + 1, params.grid.shape[0], params.no_age_groups, 1)
+        self.I = np.zeros(params.time_horizon + 1, params.grid.shape[0], params.no_age_groups, 1)
+        self.S = np.zeros(params.time_horizon + 1, params.grid.shape[0], params.no_age_groups, 1) # change this
+        self.E = np.zeros(params.time_horizon + 1, params.grid.shape[0], params.no_age_groups, 1)
+        self.R = np.zeros(params.time_horizon + 1, params.grid.shape[0], params.no_age_groups, 1)
 
         self.t = -1
 
@@ -69,8 +69,8 @@ class Model:
         dt = self.params.time_step
         for _ in range(self.params.steps_per_day):
 
-            s1 = self.S[self.t] * torch.sum(self.params.G.unsqueeze(2).unsqueeze(3) * self.params.A.matmul(self.I[self.t]).unsqueeze(0), dim=1)
-            s2 = self.I[self.t] * torch.sum(self.params.G.unsqueeze(2).unsqueeze(3) * self.params.A.matmul(self.S[self.t]).unsqueeze(0), dim=1)
+            s1 = self.S[self.t] * np.sum(self.params.G[:, :, np.newaxis, np.newaxis] * self.params.A.matmul(self.I[self.t])[np.newaxis], axis=1)
+            s2 = self.I[self.t] * np.sum(self.params.G[:, :, np.newaxis, np.newaxis] * self.params.A.matmul(self.S[self.t])[np.newaxis], axis=1)
 
             # Internal X change
             isc = - self.params.gamma * self.params.R0 / self.params.population_grid * (s1 + s2)

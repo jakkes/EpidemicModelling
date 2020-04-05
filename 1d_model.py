@@ -1,16 +1,17 @@
 import torch
-
 from epidemic import Model, ModelParameters
 
 def run(params: ModelParameters):
     model = Model(params)
+    model.prediction_step()
+    return 0
 
 if __name__ == "__main__":
     
-
     age_groups = ["0-9","10-19","20-29","30-39","40-49","50-59","60-69","70-79","80+"]
     
-    grid = torch.zeros(20, 2)
+    # Each grid cell has a longitude and latitude
+    grid = torch.zeros(21, 2)
     
     # Age groups mix uniformly
     A = 0.5 * torch.ones(grid.shape[0], len(age_groups), len(age_groups))
