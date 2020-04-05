@@ -21,7 +21,7 @@ output:
 def parse_pop_swe(filename, age_groups):
     nages = len(age_groups)
     rawtable = pandas.read_csv(filename)
-    rawtable[rawtable["ålder"] == "100+"] = "100"
+    rawtable.loc[rawtable["ålder"] == "100+", "ålder"] = "100"
     rawtable['ålder'] = rawtable['ålder'].astype(int)
     rawtable['2019'] = rawtable['2019'].astype(int)
     rawtable['region'] = rawtable['region'].str[3:-4] # remove region code
