@@ -28,16 +28,13 @@ def parse_pop_swe(filename, age_groups):
     ordered = rawtable.sort_values('region') # sort alphabetically by region name
     regions = pandas.unique(ordered['region']) # get a list of region names
     output = np.empty((regions.size, nages)) # create output array
-    print(regions.size, nages, output.shape)
     for index, reg in enumerate(regions):
-        #print(index)
         for age_index, age_interval in zip(range(nages), age_groups):
             lower, upper = age_interval
             n = rawtable[(rawtable['region'] == reg) &
                      (rawtable['ålder'] >= lower) &
                      (rawtable['ålder'] <= upper)].agg(np.sum)['2019']
             output[index, age_index] = n
-            #print(output.shape)
     return output
 
 if __name__ == "__main__":
