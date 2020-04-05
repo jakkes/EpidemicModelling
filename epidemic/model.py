@@ -69,6 +69,14 @@ class Model:
         dt = self.params.time_step
         for _ in range(self.params.steps_per_day):
 
+            # G shape [gridsize, gridsize]
+            # A shape [gridsize, age_groups, age_groups]
+            # I shape [gridsize, age_groups, 1]
+
+            # A.matmul(I) shape [1, gridsize, age_groups, 1]
+            # G.unsqueeze.... shape [gridsize, gridsize, 1, 1]
+            # output [gridsize, gridsize, agegroups, 1]
+
             s1 = self.S[self.t] * torch.sum(self.params.G.unsqueeze(2).unsqueeze(3) * self.params.A.matmul(self.I[self.t]).unsqueeze(0), dim=1)
             s2 = self.I[self.t] * torch.sum(self.params.G.unsqueeze(2).unsqueeze(3) * self.params.A.matmul(self.S[self.t]).unsqueeze(0), dim=1)
 

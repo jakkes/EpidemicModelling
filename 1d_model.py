@@ -1,6 +1,7 @@
 import pandas as pd
 import torch
 import numpy as np
+import matplotlib.pyplot as plt
 
 from epidemic import Model, ModelParameters
 from epidemic.parse import parse_pop_swe
@@ -66,4 +67,10 @@ if __name__ == "__main__":
     data = np.concatenate((data, regions.reshape(-1, 1)), axis=1)
     data = pd.DataFrame(data=data, columns=["S", "E", "I", "R", "region"])
     
+    #plt.plot(model.S[:, 11, :, 0].sum(1), label="s")
+    #plt.plot(model.E[:, 11, :, 0].sum(1), label="e")
+    #plt.plot(model.I[:, 11, :, 0].sum(1), label="i")
+    #plt.plot(model.R[:, 11, :, 0].sum(1), label="r")
+    #plt.legend()
+    #plt.show()
     plot_sweden(data)
