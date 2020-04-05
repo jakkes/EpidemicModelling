@@ -27,7 +27,6 @@ def parse_pop_swe(filename, age_groups):
     rawtable['region'] = rawtable['region'].str[3:-4] # remove region code
     ordered = rawtable.sort_values('region') # sort alphabetically by region name
     regions = pd.unique(ordered['region']) # get a list of region names
-    print(regions)
     output = np.empty((regions.size, nages)) # create output array
     for index, reg in enumerate(regions):
         for age_index, age_interval in zip(range(nages), age_groups):
